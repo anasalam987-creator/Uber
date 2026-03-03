@@ -8,7 +8,8 @@ app = Flask(**name**, static_folder=“static”)
 CORS(app)
 
 DB_PATH = os.environ.get(“DB_PATH”, “trips.db”)
-ANTHROPIC_KEY = "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"
+ANTHROPIC_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
+
 
 
 def get_db():

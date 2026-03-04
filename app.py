@@ -117,9 +117,15 @@ def test():
     try:
         import openai
         client = openai.OpenAI(api_key=ANTHROPIC_KEY)
-        return 'KEY=' + ANTHROPIC_KEY[:10] + '...'
+        r = client.chat.completions.create(
+            model='gpt-4o',
+            max_tokens=50,
+            messages=[{'role':'user','content':'say hi'}]
+        )
+        return r.choices[0].message.content
     except Exception as e:
         return str(e)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))

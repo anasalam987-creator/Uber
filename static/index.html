@@ -125,6 +125,7 @@ tr:hover td{background:rgba(0,212,255,.03)}
   <div class="tab" onclick="sw('analytics',this)">📊 تحليلات</div>
 
   <div class="tab" onclick="sw('strategy',this)">🎯 استراتيجية</div>
+  <div class="tab" onclick="sw('guaranteed',this)">💎 مضمونة</div>
 </div>
 
 <!-- رفع صور -->
@@ -235,6 +236,20 @@ tr:hover td{background:rgba(0,212,255,.03)}
   <div id="sOut"></div>
 </div>
 
+<!-- مضمونة -->
+
+<div id="pane-guaranteed" class="pane">
+  <div class="card" style="padding:13px 18px">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <span style="font-size:.8em;color:var(--t3);font-weight:600">الفئة:</span>
+      <button class="fbtn active" id="gf-all" onclick="setGF('all',this)">الكل</button>
+      <button class="fbtn fblack" id="gf-black" onclick="setGF('black',this)">&#x2B1B; Black</button>
+      <button class="fbtn fcomfort" id="gf-comfort" onclick="setGF('comfort',this)">&#x1F7E3; Comfort</button>
+    </div>
+  </div>
+  <div id="gOut"></div>
+</div>
+
 <script>
 const ZN={'1':'شمال غرب','2':'المطار','3':'شمال شرق','4':'غرب وسط','5':'وسط الرياض','6':'جنوب'};
 const ZA={'1':'١','2':'٢','3':'٣','4':'٤','5':'٥','6':'٦'};
@@ -248,7 +263,7 @@ const ZGMAPS={
   '5':'https://www.google.com/maps/dir/?api=1&destination=24.689,46.720',
   '6':'https://www.google.com/maps/dir/?api=1&destination=24.580,46.720'
 };
-let trips=[],qFiles=[],tf='all',sf='all',selectedZone=null;
+let trips=[],qFiles=[],tf='all',sf='all',gf='all',selectedZone=null;
 document.getElementById('mt').value=new Date().toTimeString().slice(0,5);
 
 async function load(){
@@ -359,11 +374,119 @@ function setSF(f,el){
   if(selectedZone)runAdvisor(selectedZone);
 }
 
+function setGF(f,el){
+  gf=f;
+  document.querySelectorAll('#pane-guaranteed .fbtn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderGuaranteed();
+}
+
+function renderGuaranteed(){
+  const el=document.getElementById('gOut');
+  if(!el)return;
+  const filtered=applyF(trips,gf);
+  if(filtered.length<2){
+    el.innerHTML='<div class="empty"><span>💎</span><p>أضف رحلات أكثر لاكتشاف الأنماط المضمونة</p></div>';
+    return;
+  }
+
+  // تجميع الرحلات حسب: منطقة الالتقاط + منطقة النزول + الساعة (±1)
+  const patterns={};
+  filtered.forEach(t=>{
+    if(!t.time)return;
+    const h=parseInt(t.time);
+    // نجمّع كل الساعات المتقاربة تحت نفس المفتاح
+    const hKey=Math.floor(h/2)*2; // تقريب لأقرب ساعتين
+    const key=t.zone_pickup+'_'+t.zone_dropoff+'_'+hKey;
+    if(!patterns[key])patterns[key]={
+      zone_pickup:t.zone_pickup, zone_dropoff:t.zone_dropoff,
+      hKey, trips:[], totalRev:0, hours:[]
+    };
+    patterns[key].trips.push(t);
+    patterns[key].totalRev+=t.price;
+    patterns[key].hours.push(h);
+  });
+
+  // فلتر: مرتين أو أكثر
+  const guaranteed=Object.values(patterns)
+    .filter(p=>p.trips.length>=2)
+    .sort((a,b)=>b.trips.length-a.trips.length);
+
+  if(!guaranteed.length){
+    el.innerHTML='<div class="empty"><span>💎</span><p>لا توجد أنماط متكررة بعد — أضف المزيد من الرحلات</p></div>';
+    return;
+  }
+
+  const now=new Date();
+  const curHour=now.getHours();
+
+  let h='<div style="margin-bottom:10px;font-size:.78em;color:var(--t3)">'+guaranteed.length+' نمط مضمون — مرتبة حسب التكرار</div>';
+
+  guaranteed.forEach((p,i)=>{
+    const avgRev=p.totalRev/p.trips.length;
+    const avgHour=Math.round(p.hours.reduce((s,v)=>s+v,0)/p.hours.length);
+    const timeLabel=(avgHour>=12?(avgHour===12?'12م':(avgHour-12)+'م'):avgHour+'ص')+':00';
+    const isNow=Math.abs(avgHour-curHour)<=1;
+    const mapsLink=ZGMAPS[p.zone_dropoff]||'';
+    const typeSet=[...new Set(p.trips.map(t=>t.type).filter(Boolean))].join(' · ');
+
+    // لون الحدود حسب التكرار
+    const borderCol=p.trips.length>=5?'#ef4444':p.trips.length>=3?'#f59e0b':'#10b981';
+    const badge=p.trips.length>=5?'🔥 ذروة':p.trips.length>=3?'⭐ قوي':'✅ مضمون';
+
+    h+='<div style="background:var(--s);border:2px solid '+borderCol+'44;border-radius:13px;padding:15px;margin-bottom:10px;position:relative">';
+
+    // شارة التكرار
+    h+='<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">';
+    h+='<div style="display:flex;align-items:center;gap:8px">';
+    h+='<div style="background:'+borderCol+'22;border:1px solid '+borderCol+'66;border-radius:8px;padding:4px 10px;font-size:.75em;font-weight:700;color:'+borderCol+'">'+badge+'</div>';
+    if(isNow)h+='<div style="background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.4);border-radius:8px;padding:4px 10px;font-size:.72em;font-weight:700;color:var(--g)">⚡ الآن!</div>';
+    h+='</div>';
+    h+='<div style="font-size:1.4em;font-weight:700;color:'+borderCol+';font-family:JetBrains Mono,monospace">×'+p.trips.length+'</div>';
+    h+='</div>';
+
+    // المسار
+    h+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">';
+    h+='<div style="background:var(--s2);border-radius:8px;padding:7px 12px;font-size:.82em;font-weight:700;color:var(--t)">'+ZEMOJI[p.zone_pickup]+' '+ZN[p.zone_pickup]+'</div>';
+    h+='<div style="color:var(--a);font-size:1.1em">&#x2192;</div>';
+    h+='<div style="background:var(--s2);border-radius:8px;padding:7px 12px;font-size:.82em;font-weight:700;color:var(--t)">'+ZEMOJI[p.zone_dropoff]+' '+ZN[p.zone_dropoff]+'</div>';
+    h+='</div>';
+
+    // تفاصيل
+    h+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px">';
+    h+='<div style="background:var(--s2);border-radius:7px;padding:7px;text-align:center"><div style="font-size:.65em;color:var(--t3)">الوقت</div><div style="font-size:.85em;font-weight:700;color:var(--a)">'+timeLabel+'</div></div>';
+    h+='<div style="background:var(--s2);border-radius:7px;padding:7px;text-align:center"><div style="font-size:.65em;color:var(--t3)">متوسط</div><div style="font-size:.85em;font-weight:700;color:var(--g)">'+avgRev.toFixed(0)+' ر</div></div>';
+    h+='<div style="background:var(--s2);border-radius:7px;padding:7px;text-align:center"><div style="font-size:.65em;color:var(--t3)">الفئة</div><div style="font-size:.75em;font-weight:700;color:var(--p)">'+( typeSet||'متنوع')+'</div></div>';
+    h+='</div>';
+
+    // رابط Maps
+    h+='<a href="'+mapsLink+'" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:6px;background:#1a73e8;color:#fff;padding:8px;border-radius:8px;font-size:.8em;font-weight:700;text-decoration:none">&#x1F4CD; توجه إلى '+ZN[p.zone_dropoff]+'</a>';
+
+    h+='</div>';
+  });
+
+  el.innerHTML=h;
+}
+
 function selectZone(z, el){
   selectedZone=z;
-  document.querySelectorAll('.zbtn').forEach(b=>b.classList.remove('sel'));
+  document.querySelectorAll('.zbtn').forEach(b=>{
+    b.classList.remove('sel','zbtn-recommend');
+    b.style.borderColor='';b.style.background='';b.style.color='';
+  });
   el.classList.add('sel');
   runAdvisor(z);
+}
+
+function highlightRecommended(bestZ){
+  document.querySelectorAll('.zbtn').forEach((b,i)=>{
+    const z=i+1;
+    if(z===bestZ&&z!==selectedZone){
+      b.style.borderColor='#ef4444';
+      b.style.background='rgba(239,68,68,.12)';
+      b.style.color='#fca5a5';
+    }
+  });
 }
 
 function runAdvisor(zone){
@@ -447,6 +570,8 @@ function runAdvisor(zone){
   });
   h+='</div>';
   el.innerHTML=h;
+  // تحديد المنطقة الموصى بها باللون الأحمر
+  highlightRecommended(bestZ);
 }
 function renderStrategy(){
   const el=document.getElementById('sOut');
@@ -506,6 +631,7 @@ function sw(name,el){
   if(name==='analytics')renderAnalytics();
   if(name==='strategy'){renderStrategy();if(selectedZone)runAdvisor(selectedZone);}
   if(name==='trips'){renderTypeCards();}
+  if(name==='guaranteed'){renderGuaranteed();}
 }
 function toast(msg,type){const n=document.getElementById('toast');n.textContent=msg;n.className='show '+(type||'ok');setTimeout(()=>n.className='',3500);}
 </script>

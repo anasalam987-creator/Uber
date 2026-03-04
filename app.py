@@ -112,6 +112,14 @@ def api_del(tid):
     con.commit()
     con.close()
     return jsonify({'ok': True})
+@app.route('/test')
+def test():
+    try:
+        import openai
+        client = openai.OpenAI(api_key=ANTHROPIC_KEY)
+        return 'KEY=' + ANTHROPIC_KEY[:10] + '...'
+    except Exception as e:
+        return str(e)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))

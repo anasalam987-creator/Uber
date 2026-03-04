@@ -5,29 +5,29 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>أوبر داشبورد - الرياض</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
-:root{--bg:#080c14;--s:#0d1420;--s2:#111827;--b:#1e2d45;--b2:#243552;--a:#00d4ff;--g:#10b981;--r:#ef4444;--o:#f59e0b;--p:#8b5cf6;--t:#e2e8f0;--t2:#94a3b8;--t3:#64748b}
+:root{--bg:#0a0a0a;--s:#111111;--s2:#161616;--b:#2a2a2a;--b2:#333333;--a:#00d4ff;--g:#10b981;--r:#ef4444;--o:#f59e0b;--p:#8b5cf6;--t:#f0f0f0;--t2:#a0a0a0;--t3:#606060}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'IBM Plex Sans Arabic',sans-serif;background:var(--bg);color:var(--t);min-height:100vh}
-.hdr{padding:14px 20px;border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:rgba(8,12,20,.95)}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--t);min-height:100vh;font-size:15px}
+.hdr{padding:16px 20px;border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:#0a0a0a}
 .logo{display:flex;align-items:center;gap:10px}
-.logo-icon{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--a),var(--p));display:flex;align-items:center;justify-content:center;font-size:1.15em}
-.logo h1{font-size:1.05em;font-weight:700}.logo p{font-size:.68em;color:var(--t3)}
+.logo-icon{width:36px;height:36px;border-radius:8px;background:#1a1a1a;border:1px solid var(--b2);display:flex;align-items:center;justify-content:center;font-size:1.1em}
+.logo h1{font-size:1em;font-weight:700;letter-spacing:.3px}.logo p{font-size:.65em;color:var(--t3)}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--g);display:inline-block;margin-left:5px;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-.kpis{display:flex;gap:7px;flex-wrap:wrap}
-.kpi{background:var(--s);border:1px solid var(--b);border-radius:9px;padding:6px 13px;text-align:center}
-.kpi .v{font-size:1.15em;font-weight:700;color:var(--a);font-family:'JetBrains Mono',monospace}
-.kpi .l{font-size:.65em;color:var(--t3)}
-.tabs{position:sticky;top:0;z-index:9;display:flex;background:rgba(13,20,32,.97);border-bottom:1px solid var(--b);overflow-x:auto}
-.tab{padding:12px 17px;cursor:pointer;color:var(--t3);font-size:.83em;font-weight:500;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s}
-.tab.active{color:var(--a);border-bottom-color:var(--a)}
-.pane{display:none;padding:18px;max-width:900px;margin:0 auto}
+.kpis{display:flex;gap:6px;flex-wrap:wrap}
+.kpi{background:var(--s);border:1px solid var(--b);border-radius:8px;padding:6px 12px;text-align:center}
+.kpi .v{font-size:1.1em;font-weight:700;color:var(--t);font-family:'JetBrains Mono',monospace}
+.kpi .l{font-size:.62em;color:var(--t3)}
+.tabs{position:sticky;top:0;z-index:9;display:flex;background:#0a0a0a;border-bottom:1px solid var(--b);overflow-x:auto}
+.tab{padding:13px 16px;cursor:pointer;color:var(--t3);font-size:.82em;font-weight:500;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s}
+.tab.active{color:var(--t);border-bottom-color:var(--a)}
+.pane{display:none;padding:16px;max-width:900px;margin:0 auto}
 .pane.active{display:block}
-.card{background:var(--s);border:1px solid var(--b);border-radius:13px;padding:18px;margin-bottom:14px}
-.card h3{color:var(--a);font-size:.88em;font-weight:600;margin-bottom:13px}
+.card{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:16px;margin-bottom:12px}
+.card h3{color:var(--t2);font-size:.82em;font-weight:700;margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
 .dz{border:2px dashed var(--b2);border-radius:14px;padding:36px 20px;text-align:center;cursor:pointer;transition:all .3s}
 .dz:hover{border-color:var(--a);background:rgba(0,212,255,.04)}
 input[type=file]{display:none}
@@ -52,7 +52,7 @@ input[type=file]{display:none}
 .fg .fw{grid-column:1/-1}
 .ff{display:flex;flex-direction:column;gap:3px}
 .ff label{font-size:.67em;color:var(--t3);font-weight:600;text-transform:uppercase}
-.ff input,.ff select{background:var(--s2);border:1px solid var(--b2);border-radius:7px;padding:7px 10px;color:var(--t);font-size:.82em;font-family:inherit}
+.ff input,.ff select{background:var(--s2);border:1px solid var(--b2);border-radius:7px;padding:8px 11px;color:var(--t);font-size:.85em;font-family:'Tajawal',sans-serif}
 .ff input:focus,.ff select:focus{outline:none;border-color:var(--a)}
 .tw{overflow-x:auto;border-radius:9px;border:1px solid var(--b)}
 table{width:100%;border-collapse:collapse;font-size:.77em;min-width:800px}
@@ -153,40 +153,6 @@ tr:hover td{background:rgba(0,212,255,.03)}
       <button class="btn br2" onclick="clearQ()">✕ مسح</button>
     </div>
   </div>
-  <div class="card">
-    <h3>✏️ إضافة يدوية</h3>
-    <div class="fg">
-      <div class="ff"><label>📅 التاريخ</label><input type="date" id="md"></div>
-      <div class="ff"><label>🕐 الوقت</label><input type="time" id="mt"></div>
-      <div class="ff"><label>🚗 الفئة</label>
-        <select id="mtype">
-          <option value="Black">Black</option>
-          <option value="Comfort">Comfort</option>
-          <option value="UberX">UberX</option>
-          <option value="Black Exclusive">Black Exclusive</option>
-        </select>
-      </div>
-      <div class="ff"><label>💰 السعر</label><input type="number" id="mpr" step="0.01"></div>
-      <div class="ff fw"><label>📍 الالتقاط</label><input type="text" id="mpu"></div>
-      <div class="ff fw"><label>🏁 النزول</label><input type="text" id="mdo"></div>
-      <div class="ff"><label>🗺️ منطقة الالتقاط</label><select id="mzp">
-        <option value="1">١ شمال غرب</option><option value="2">٢ المطار</option>
-        <option value="3">٣ شمال شرق</option><option value="4" selected>٤ غرب وسط</option>
-        <option value="5">٥ وسط</option><option value="6">٦ جنوب</option>
-      </select></div>
-      <div class="ff"><label>🗺️ منطقة النزول</label><select id="mzd">
-        <option value="1">١ شمال غرب</option><option value="2">٢ المطار</option>
-        <option value="3">٣ شمال شرق</option><option value="4">٤ غرب وسط</option>
-        <option value="5" selected>٥ وسط</option><option value="6">٦ جنوب</option>
-      </select></div>
-      <div class="ff"><label>📏 كم</label><input type="number" id="mkm" step="0.1"></div>
-      <div class="ff"><label>⏱ دقيقة</label><input type="number" id="mdur"></div>
-      <div class="ff"><label>⭐ تقييم</label><input type="number" id="mrat" step="0.01"></div>
-      <div class="ff"><label>🚀 Boost+</label><input type="number" id="mbst" value="0" step="0.01"></div>
-    </div>
-    <div style="margin-top:10px"><button class="btn bg2" onclick="saveManual()">💾 حفظ</button></div>
-  </div>
-</div>
 
 <!-- السجل -->
 
@@ -217,6 +183,8 @@ tr:hover td{background:rgba(0,212,255,.03)}
   </div>
   <div id="aOut"></div>
 </div>
+
+<!-- الأعضاء -->
 
 <!-- خريطة -->
 
@@ -277,7 +245,6 @@ const ZGMAPS={
   '6':'https://www.google.com/maps/dir/?api=1&destination=24.580,46.720'
 };
 let trips=[],qFiles=[],tf='all',sf='all',gf='all',af='today',selectedZone=null;
-document.getElementById('mt').value=new Date().toTimeString().slice(0,5);
 
 // تحميل الاسم المحفوظ
 (function(){
@@ -693,12 +660,6 @@ async function uploadAll(){
     toast('✅ '+ok+' رحلة'+(err?' · '+err+' فشل':''),ok?'ok':'err');await load();
   }catch(e){toast('❌ خطأ','err');}
   document.getElementById('upbtn').disabled=false;document.getElementById('pgw').style.display='none';
-}
-async function saveManual(){
-  const t={date:document.getElementById('md').value,time:document.getElementById('mt').value,type:document.getElementById('mtype').value||'Black',price:parseFloat(document.getElementById('mpr').value)||0,pickup:document.getElementById('mpu').value||'',dropoff:document.getElementById('mdo').value||'',zone_pickup:document.getElementById('mzp').value,zone_dropoff:document.getElementById('mzd').value,km:parseFloat(document.getElementById('mkm').value)||0,duration:parseInt(document.getElementById('mdur').value)||0,rating:parseFloat(document.getElementById('mrat').value)||0,boost:parseFloat(document.getElementById('mbst').value)||0,notes:'',added_by:document.getElementById('uname').value.trim()||'يدوي'};
-  if(!t.price){toast('يرجى إدخال السعر','err');return;}
-  await fetch('/api/trip',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(t)});
-  toast('✅ تم الحفظ!','ok');await load();
 }
 function sw(name,el){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));

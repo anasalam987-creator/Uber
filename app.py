@@ -8,7 +8,8 @@ app = Flask(__name__, static_folder='static')
 CORS(app)
 
 DB_PATH = os.environ.get('DB_PATH', 'trips.db')
-ANTHROPIC_KEY = os.environ.get('ANTHROPIC_API_KEY', '')
+ANTHROPIC_KEY = os.environ.get('OPENAI_API_KEY', '')
+
 def get_db():
     con = sqlite3.connect(DB_PATH)
     con.row_factory = sqlite3.Row

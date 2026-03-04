@@ -174,12 +174,12 @@ tr:hover td{background:rgba(0,212,255,.03)}
 
 <div id="pane-analytics" class="pane">
   <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap">
-    <button class="fbtn active" id="af-today" onclick="setAF('today',this)">اليوم</button>
+    <button class="fbtn" id="af-today" onclick="setAF('today',this)">اليوم</button>
     <button class="fbtn" id="af-yesterday" onclick="setAF('yesterday',this)">الأمس</button>
     <button class="fbtn" id="af-week" onclick="setAF('week',this)">أسبوع</button>
     <button class="fbtn" id="af-2weeks" onclick="setAF('2weeks',this)">أسبوعين</button>
     <button class="fbtn" id="af-month" onclick="setAF('month',this)">شهر</button>
-    <button class="fbtn" id="af-all" onclick="setAF('all',this)">الكل</button>
+    <button class="fbtn active" id="af-all" onclick="setAF('all',this)">الكل</button>
   </div>
   <div id="aOut"></div>
 </div>
@@ -244,7 +244,7 @@ const ZGMAPS={
   '5':'https://www.google.com/maps/dir/?api=1&destination=24.689,46.720',
   '6':'https://www.google.com/maps/dir/?api=1&destination=24.580,46.720'
 };
-let trips=[],qFiles=[],tf='all',sf='all',gf='all',af='today',selectedZone=null;
+let trips=[],qFiles=[],tf='all',sf='all',gf='all',af='all',selectedZone=null;
 
 // تحميل الاسم المحفوظ
 (function(){

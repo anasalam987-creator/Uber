@@ -133,7 +133,10 @@ tr:hover td{background:rgba(0,212,255,.03)}
 <div id="pane-upload" class="pane active">
   <div class="card">
     <h3>👤 اسمك</h3>
-    <div class="ff"><input type="text" id="uname" placeholder="أدخل اسمك — سيظهر في السجل المشترك" style="font-size:.88em;padding:10px 13px"></div>
+    <div class="ff">
+      <input type="text" id="uname" placeholder="أدخل اسمك — سيُحفظ تلقائياً" style="font-size:.88em;padding:10px 13px">
+      <div style="font-size:.68em;color:var(--t3);margin-top:4px">✅ يُحفظ على جهازك تلقائياً — لن تحتاج إدخاله مرة ثانية</div>
+    </div>
   </div>
   <div class="card">
     <h3>📸 رفع صور إيصالات أوبر</h3>
@@ -275,6 +278,20 @@ const ZGMAPS={
 };
 let trips=[],qFiles=[],tf='all',sf='all',gf='all',af='today',selectedZone=null;
 document.getElementById('mt').value=new Date().toTimeString().slice(0,5);
+
+// تحميل الاسم المحفوظ
+(function(){
+  const saved=localStorage.getItem('uber_username');
+  if(saved){
+    document.getElementById('uname').value=saved;
+  }
+})();
+
+// حفظ الاسم تلقائياً عند الكتابة
+document.getElementById('uname').addEventListener('input',function(){
+  const v=this.value.trim();
+  if(v) localStorage.setItem('uber_username',v);
+});
 
 async function load(){
   try{

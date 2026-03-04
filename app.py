@@ -89,8 +89,6 @@ def api_upload():
             con.close()
             results.append({'file': f.filename, 'status': 'ok', 'trip': trip})
         except Exception as e:
-            import traceback
-print(traceback.format_exc())
 
             results.append({'file': f.filename, 'status': 'error', 'error': str(e)})
     return jsonify(results)

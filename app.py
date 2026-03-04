@@ -22,22 +22,23 @@ def init_db():
 
 init_db()
 def extract_from_image(b64, mt):
-    client = anthropic.Anthropic(api_key=ANTHROPIC_KEY)
+    client = openai.OpenAI(api_key=ANTHROPIC_KEY)
     today = datetime.now().strftime('%Y-%m-%d')
     prompt = 'استخرج بيانات ايصال اوبر وارجع JSON فقط: {"time":"17:30","type":"Black","price":65.00,"pickup":"نقطة","dropoff":"نقطة","km":20.0,"duration_minutes":30,"rating":4.80,"boost":0.0,"zone_pickup":"4","zone_dropoff":"5","notes":""} المناطق: 1=شمال غرب,2=مطار,3=شمال شرق,4=غرب وسط,5=وسط الرياض,6=جنوب. اليوم:' + today + '. JSON فقط.'
-    msg = client.messages.create(
-        model='claude-opus-4-5',
+    msg = client.chat.completions.create(
+        model='gpt-4o',
         max_tokens=600,
         messages=[{'role':'user','content':[
-            {'type':'image','source':{'type':'base64','media_type':mt,'data':b64}},
+            {'type':'image_url','image_url':{'url':'data:' + mt + ';base64,' + b64}},
             {'type':'text','text':prompt}
         ]}]
     )
-    text = msg.content[0].text.strip()
+    text = msg.choices[0].message.content.strip()
     m = re.search(r'\{[\s\S]*\}', text)
     if not m:
         raise ValueError('لم يعثر على JSON: ' + text[:80])
     return json.loads(m.group())
+
 @app.route('/')
 def index():
     return send_from_directory('static', 'index.html')

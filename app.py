@@ -2,7 +2,7 @@ import os, json, base64, uuid, re, sqlite3
 from datetime import datetime
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
-import anthropic
+import openai
 
 app = Flask(__name__, static_folder='static')
 CORS(app)
